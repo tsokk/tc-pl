@@ -1,0 +1,3 @@
+Perhaps not very surprising since I've read also the Tour of C++, but the move semantics
+with rvalue references, and its use as opposed to copying objects is something to
+study more about.

@@ -1,0 +1,5 @@
+Build-in types are built from the fundamental types, the const
+modifier, and the declarator operators. Examples: bool, int, const char, double, *char.
+Concrete types are those whose representation is part of their definition. The representation
+could be just a pointer to data elsewhere, but that representation is part of the definition.
+Examples: vector, string, pair, map, set.
