@@ -1,0 +1,2 @@
+Compiler processes source text files and produces object files. Linker combines
+those object files and produces an executable file.

@@ -1,0 +1,2 @@
+An invariant is a statement that says what is assumed to be true for a class, that is, a precondition that must hold.
+It is established by the constructor of the class. It helps by catching errors.

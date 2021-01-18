@@ -1,0 +1,8 @@
+Some C++ compilers:
+
+* g++ (from Gnu Compiler Collection)
+* clang++ (from LLVM project)
+* cl (from Microsoft)
+* HPC C++ from Nvidia.
+
+See a longer list [here](https://en.cppreference.com/w/cpp/compiler_support).
