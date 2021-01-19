@@ -1,0 +1,2 @@
+The use of function objects to use in combination with algorithms operating on sequences
+of user-defined types. Defenitely something to study and practice more.

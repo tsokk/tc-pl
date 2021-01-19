@@ -1,0 +1,6 @@
+Five standard library containers:
+	* vector
+	* map
+	* set
+	* list
+	* string.

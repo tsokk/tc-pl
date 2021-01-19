@@ -1,0 +1,6 @@
+Five standard library algorithms:
+	* find
+	* find_if
+	* count
+	* sort
+	* accumulate.
