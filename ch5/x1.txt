@@ -1,0 +1,3 @@
+Something to keep in mind is that the standard library provides valarray for
+numerical computation. Also, that the advice is to use libraries for serious
+numerical computation.
