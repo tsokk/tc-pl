@@ -1,0 +1,4 @@
+This is a test file that contains some decimal numbers.
+First such example is 3.4. Another is 42.0. Note that
+we could list many more such numbers. For instance,
+here's a list: [-2.4, -1.0, 45.345, 200.008, 99.99].
