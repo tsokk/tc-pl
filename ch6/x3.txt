@@ -1,0 +1,17 @@
+Five C++ constructs for which the meaning is undefined:
+	- attempt to assign to an array address that is out of bounds
+	- signed integer overflow
+	- null pointer dereference
+	- more than one modifications of the same scalar in an expression
+	  that are unsequenced
+	- access to an object through a pointer of a different type.
+
+Five C++ constructs for which the meaning is implementation-defined:
+	- the type of std::size_t
+	- the number of bits in a byte
+	- the text of std::bad_alloc::what
+	- default number of buckets in unordered_map
+	- diagnostic message.
+
+The "Index of implementation-defined behaviour" of the international
+standard lists many more.

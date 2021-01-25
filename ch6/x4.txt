@@ -1,0 +1,15 @@
+How to write non-portable C++ code:
+
+1. Keep just one compiler around and write and test all code using it.
+2. Write your code assuming that the sizes of built-in types are the
+   same in case of all implementations.
+3. Use compiler-specific pragmas, macros and extensions.
+4. Use C library features, especially ones that are known to differ
+   between implementations.
+5. Use compiler-specific data types extensively
+6. Prefer direct OS calls to standard library functions for accessing files.
+7. Use a build system that is available on one platform only.
+8. Use a GUI-libary that is platform-specific.
+9. Use features that the standard lists as implementation-defined.
+10. Avoid the use of C++ standard library as much as possible.
+
