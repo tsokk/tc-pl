@@ -1,0 +1,6 @@
+g++: bool -> char -> int -> double
+all standards-compliant: bool -> char -> int -> double
+
+Note that this is an elaborate issue. See for instance, the following post by
+Alex B and the Stack Overflow community:
+https://stackoverflow.com/questions/589575/what-does-the-c-standard-state-the-size-of-int-long-type-to-be
