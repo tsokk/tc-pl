@@ -1,0 +1,4 @@
+There's what's called natural alignment constraint, which requires that
+every N byte access must be aligned on a memory access boundary of N.
+That is address modulo N must be equal to zero. A detailed explanation is found
+here: https://lwn.net/Articles/260832/

@@ -1,0 +1,109 @@
+g++ -ggdb3 x13.cpp and the compiler produces shorter code for pointer iteration
+
+(gdb) disassemble
+Dump of assembler code for function _Z2fiPc:
+   0x0000000000401176 <+0>:	push   %rbp
+   0x0000000000401177 <+1>:	mov    %rsp,%rbp
+   0x000000000040117a <+4>:	sub    $0x20,%rsp
+   0x000000000040117e <+8>:	mov    %rdi,-0x18(%rbp)
+   0x0000000000401182 <+12>:	movl   $0x0,-0x4(%rbp)
+   0x0000000000401189 <+19>:	mov    -0x4(%rbp),%eax
+   0x000000000040118c <+22>:	movslq %eax,%rdx
+   0x000000000040118f <+25>:	mov    -0x18(%rbp),%rax
+   0x0000000000401193 <+29>:	add    %rdx,%rax
+   0x0000000000401196 <+32>:	movzbl (%rax),%eax
+   0x0000000000401199 <+35>:	test   %al,%al
+   0x000000000040119b <+37>:	je     0x4011bd <_Z2fiPc+71>
+   0x000000000040119d <+39>:	mov    -0x4(%rbp),%eax
+   0x00000000004011a0 <+42>:	movslq %eax,%rdx
+   0x00000000004011a3 <+45>:	mov    -0x18(%rbp),%rax
+   0x00000000004011a7 <+49>:	add    %rdx,%rax
+   0x00000000004011aa <+52>:	movzbl (%rax),%eax
+   0x00000000004011ad <+55>:	movsbl %al,%eax
+   0x00000000004011b0 <+58>:	mov    %eax,%edi
+   0x00000000004011b2 <+60>:	call   0x401156 <_Z3usec>
+   0x00000000004011b7 <+65>:	addl   $0x1,-0x4(%rbp)
+   0x00000000004011bb <+69>:	jmp    0x401189 <_Z2fiPc+19>
+   0x00000000004011bd <+71>:	nop
+   0x00000000004011be <+72>:	leave
+   0x00000000004011bf <+73>:	ret
+End of assembler dump.
+
+(gdb) disassemble
+Dump of assembler code for function _Z2fpPc:
+   0x00000000004011c0 <+0>:	push   %rbp
+   0x00000000004011c1 <+1>:	mov    %rsp,%rbp
+   0x00000000004011c4 <+4>:	sub    $0x20,%rsp
+   0x00000000004011c8 <+8>:	mov    %rdi,-0x18(%rbp)
+   0x00000000004011cc <+12>:	mov    -0x18(%rbp),%rax
+   0x00000000004011d0 <+16>:	mov    %rax,-0x8(%rbp)
+   0x00000000004011d4 <+20>:	mov    -0x8(%rbp),%rax
+   0x00000000004011d8 <+24>:	movzbl (%rax),%eax
+   0x00000000004011db <+27>:	test   %al,%al
+   0x00000000004011dd <+29>:	je     0x4011f7 <_Z2fpPc+55>
+   0x00000000004011df <+31>:	mov    -0x8(%rbp),%rax
+   0x00000000004011e3 <+35>:	movzbl (%rax),%eax
+   0x00000000004011e6 <+38>:	movsbl %al,%eax
+   0x00000000004011e9 <+41>:	mov    %eax,%edi
+   0x00000000004011eb <+43>:	call   0x401156 <_Z3usec>
+   0x00000000004011f0 <+48>:	addq   $0x1,-0x8(%rbp)
+   0x00000000004011f5 <+53>:	jmp    0x4011d4 <_Z2fpPc+20>
+   0x00000000004011f7 <+55>:	nop
+   0x00000000004011f8 <+56>:	leave
+   0x00000000004011f9 <+57>:	ret
+End of assembler dump.
+
+ g++ -ggdb3 -O3 x13.cpp however turns the situation around; now the pointer version is longer
+                      ^^^
+
+(gdb) disassemble
+Dump of assembler code for function _Z2fiPc:
+   0x0000000000401220 <+0>:	movzbl (%rdi),%eax
+   0x0000000000401223 <+3>:	test   %al,%al
+   0x0000000000401225 <+5>:	je     0x401260 <_Z2fiPc+64>
+   0x0000000000401227 <+7>:	push   %rbx
+   0x0000000000401228 <+8>:	lea    0x1(%rdi),%rbx
+   0x000000000040122c <+12>:	sub    $0x10,%rsp
+   0x0000000000401230 <+16>:	mov    $0x1,%edx
+   0x0000000000401235 <+21>:	lea    0xf(%rsp),%rsi
+   0x000000000040123a <+26>:	add    $0x1,%rbx
+   0x000000000040123e <+30>:	mov    %al,0xf(%rsp)
+   0x0000000000401242 <+34>:	mov    $0x404040,%edi
+   0x0000000000401247 <+39>:	call   0x401040 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   0x000000000040124c <+44>:	movzbl -0x1(%rbx),%eax
+   0x0000000000401250 <+48>:	test   %al,%al
+   0x0000000000401252 <+50>:	jne    0x401230 <_Z2fiPc+16>
+   0x0000000000401254 <+52>:	add    $0x10,%rsp
+   0x0000000000401258 <+56>:	pop    %rbx
+   0x0000000000401259 <+57>:	ret
+   0x000000000040125a <+58>:	nopw   0x0(%rax,%rax,1)
+   0x0000000000401260 <+64>:	ret
+End of assembler dump.
+
+(gdb) disassemble
+Dump of assembler code for function main():
+   0x0000000000401070 <+0>:	push   %rbx
+   0x0000000000401071 <+1>:	sub    $0x10,%rsp
+   0x0000000000401075 <+5>:	lea    0xb(%rsp),%rdi
+   0x000000000040107a <+10>:	movl   $0x66647361,0xb(%rsp)
+   0x0000000000401082 <+18>:	movb   $0x0,0xf(%rsp)
+   0x0000000000401087 <+23>:	call   0x401220 <_Z2fiPc>
+   0x000000000040108c <+28>:	movzbl 0xb(%rsp),%eax
+   0x0000000000401091 <+33>:	test   %al,%al
+   0x0000000000401093 <+35>:	je     0x4010c3 <main()+83>
+   0x0000000000401095 <+37>:	lea    0xb(%rsp),%rbx
+   0x000000000040109a <+42>:	nopw   0x0(%rax,%rax,1)
+   0x00000000004010a0 <+48>:	mov    $0x1,%edx
+   0x00000000004010a5 <+53>:	lea    0xa(%rsp),%rsi
+   0x00000000004010aa <+58>:	add    $0x1,%rbx
+   0x00000000004010ae <+62>:	mov    %al,0xa(%rsp)
+   0x00000000004010b2 <+66>:	mov    $0x404040,%edi
+   0x00000000004010b7 <+71>:	call   0x401040 <_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@plt>
+   0x00000000004010bc <+76>:	movzbl (%rbx),%eax
+   0x00000000004010bf <+79>:	test   %al,%al
+   0x00000000004010c1 <+81>:	jne    0x4010a0 <main()+48>
+   0x00000000004010c3 <+83>:	add    $0x10,%rsp
+   0x00000000004010c7 <+87>:	xor    %eax,%eax
+   0x00000000004010c9 <+89>:	pop    %rbx
+   0x00000000004010ca <+90>:	ret
+End of assembler dump.
