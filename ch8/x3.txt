@@ -1,0 +1,2 @@
+An example where it would make sense to use a name in its own initializer:
+a struct that needs a constructor.
