@@ -1,0 +1,2 @@
+Let's take a look at the source code of qtide:
+https://github.com/jsoftware/qtide
