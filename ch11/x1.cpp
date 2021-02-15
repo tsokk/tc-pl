@@ -1,27 +1,22 @@
 #include <iostream>
 
-int main() {
-  const int n = 1e9;
+void f(const int n) {
   double *p = new double[n];
   std::cout << n*sizeof(p) << '\n';
 }
 
-/*
+void g(const int n) {
+  double *p = new double[n];
+  for (int i = 0; i < n; ++i) {
+    *p = 42;
+    ++p;
+  }
+  std::cout << n*sizeof(p) << '\n';
+}
 
-When n = 1e9:
-8000000000
-
-real	0m0,004s
-user	0m0,002s
-sys	0m0,002s
-
-
-When n = 1e10:
-terminate called after throwing an instance of 'std::bad_alloc'
-  what():  std::bad_alloc
-/bin/bash: rivi 1:118023 Keskeytetty             (luotiin core-tiedosto)./a.out
-
-real	0m0,185s
-user	0m0,003s
-sys	0m0,003s
-*/
+int main() {
+  // f(1e9);   8Gb, 0.001s
+  // f(1e10);  std::bad_alloc, 0.164s
+  // g(1e9);   päätetty, 7.779s
+  // g(1e8);   ?, 0.005s
+}
