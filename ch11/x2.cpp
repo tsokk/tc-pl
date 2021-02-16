@@ -6,6 +6,7 @@
 #include <numeric>
 #include <iterator>
 
+// data structures and functions for profiling statistics
 struct Result { const double sum; const long time; };
 struct Statistic{ const double mean; const double sd; };
 
@@ -27,7 +28,8 @@ const double sd(const std::vector<double>& obs) {
 }
 
 // for loop using indices
-Result f1(const std::vector<int>& vi) {
+template<typename T>
+Result f1(const std::vector<T>& vi) {
   double sum = 0;
   const int n = vi.size();
   auto t0 = std::chrono::high_resolution_clock::now();
@@ -39,10 +41,11 @@ Result f1(const std::vector<int>& vi) {
 }
 
 // for loop using pointers
-Result f2(std::vector<int>& vi) {
+template<typename T>
+Result f2(std::vector<T>& vi) {
   double sum = 0;
   auto t0 = std::chrono::high_resolution_clock::now();
-  for (int* i = &vi[0]; i != (&vi[0] + vi.size()); ++i)
+  for (int* i = reinterpret_cast<int*>(&vi[0]); i != reinterpret_cast<int*>((&vi[0] + vi.size())); ++i)
     sum += *i;
   auto t1 = std::chrono::high_resolution_clock::now();
   Result res = {sum, std::chrono::duration_cast<std::chrono::microseconds>(t1-t0).count()};
@@ -50,7 +53,8 @@ Result f2(std::vector<int>& vi) {
 }
 
 // for loop using iterators
-Result f3(const std::vector<int>& vi) {
+template<typename T>
+Result f3(const std::vector<T>& vi) {
   double sum = 0;
   auto t0 = std::chrono::high_resolution_clock::now();
   for (auto i = begin(vi); i != end(vi); ++i)
@@ -61,7 +65,8 @@ Result f3(const std::vector<int>& vi) {
 }
 
 // range-for
-Result f4(const std::vector<int>& vi) {
+template<typename T>
+Result f4(const std::vector<T>& vi) {
   double sum = 0;
   auto t0 = std::chrono::high_resolution_clock::now();
   for (const auto& i : vi)
@@ -72,7 +77,8 @@ Result f4(const std::vector<int>& vi) {
 }
 
 // for_each algorithm
-Result f5(const std::vector<int>& vi) {
+template<typename T>
+Result f5(const std::vector<T>& vi) {
   double sum = 0;
   auto t0 = std::chrono::high_resolution_clock::now();
   std::for_each(vi.begin(), vi.end(), [&](int n) { sum += n; });
@@ -82,13 +88,13 @@ Result f5(const std::vector<int>& vi) {
 }
 
 // function object
-template<typename T, typename S>
+template<typename T>
 class Sum_elems {
   const std::vector<T>& vec;
 public:
   Sum_elems(const std::vector<T>& v) :vec{v} { }
-  S operator()() const {
-    S sum = 0;
+  double operator()() const {
+    double sum = 0;
     for(const auto& elem : vec)
       sum += elem;
     return sum;
@@ -96,7 +102,8 @@ public:
 };
 
 // lambda function
-auto f7 = [](std::vector<int>& vd) {
+template<typename T>
+auto f7 = [](std::vector<T>& vd) {
   double sum = 0;
   for (const auto& d : vd)
     sum += d;
@@ -109,13 +116,8 @@ Statistic measure(const std::vector<double>& vd) {
   return {sample_mean, std::round(sample_sd)};
 }
 
-int main() {
-  std::vector<int> a;
-  for (int i = 0; i < 1e5; ++i)
-    a.push_back(i);
-
-  std::cout << "summing 100 000 ints, using\n";
-
+template<typename T>
+void profile_loops(std::vector<T>& a) {
   // for loop using indices
   const int n = 200;
   std::vector<double> v1;
@@ -161,12 +163,24 @@ int main() {
   }
   Statistic s5 = measure(v5);
   std::cout << "for_each algorithm (us): " << "mean = " << s5.mean << ", sd = " << s5.sd << '\n';
+}
 
-  // function object
+int main() {
+  const int n = 200;
+  // Element type integer
+  std::vector<int> a;
+  for (int i = 0; i < 1e5; ++i)
+    a.push_back(i);
+
+  // loops of different kinds
+  std::cout << "Summing 100 000 ints, using\n";
+  profile_loops(a);
+
+  // and the function object
   std::vector<double> v6;
   for (auto i = 0; i < n; ++i) {
     auto t0 = std::chrono::high_resolution_clock::now();
-    Sum_elems<int, double> sum {a};
+    Sum_elems<int> sum {a};
     sum();
     auto t1 = std::chrono::high_resolution_clock::now();
     auto dur = std::chrono::duration_cast<std::chrono::microseconds>(t1-t0).count();
@@ -175,11 +189,11 @@ int main() {
   Statistic s6 = measure(v6);
   std::cout << "function object (us): " << "mean = " << s6.mean << ", sd = " << s6.sd << '\n';
 
-  // lambda function
+  // and the lambda function
   std::vector<double> v7;
   for (auto i = 0; i < n; ++i) {
     auto t0 = std::chrono::high_resolution_clock::now();
-    f7(a);
+    f7<int>(a);
     auto t1 = std::chrono::high_resolution_clock::now();
     auto dur = std::chrono::duration_cast<std::chrono::microseconds>(t1-t0).count();
     v7.push_back(dur);
@@ -187,14 +201,57 @@ int main() {
   Statistic s7 = measure(v7);
   std::cout << "lambda function (us): " << "mean = " << s7.mean << ", sd = " << s7.sd << '\n';
 
-  /* TODO: try this for other element types as well
-    summing 100 000 ints, using
-    for loop with indices (us): mean = 391, sd = 220
-    for loop with pointers (us): mean = 469, sd = 28
-    for loop with iterators (us): mean = 2031, sd = 24
-    range-for loop (us): mean = 1174, sd = 20
-    for_each algorithm (us): mean = 1296, sd = 28
-    function object (us): mean = 1212, sd = 31
-    lambda function (us): mean = 1195, sd = 21
-   */
+  // Element type double
+  std::vector<double> b;
+  for (int i = 0; i < 1e5; ++i)
+    b.push_back(i);
+
+  std::cout << '\n';
+  std::cout << "Summing 100 000 doubles, using\n";
+  profile_loops(b);
+
+  // and the function object
+  std::vector<double> v8;
+  for (auto i = 0; i < n; ++i) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+    Sum_elems<double> sum {b};
+    sum();
+    auto t1 = std::chrono::high_resolution_clock::now();
+    auto dur = std::chrono::duration_cast<std::chrono::microseconds>(t1-t0).count();
+    v8.push_back(dur);
+  }
+  Statistic s8 = measure(v8);
+  std::cout << "function object (us): " << "mean = " << s8.mean << ", sd = " << s8.sd << '\n';
+
+  // and the lambda function
+  std::vector<double> v9;
+  for (auto i = 0; i < n; ++i) {
+    auto t0 = std::chrono::high_resolution_clock::now();
+    f7<double>(b);
+    auto t1 = std::chrono::high_resolution_clock::now();
+    auto dur = std::chrono::duration_cast<std::chrono::microseconds>(t1-t0).count();
+    v9.push_back(dur);
+  }
+  Statistic s9 = measure(v9);
+  std::cout << "lambda function (us): " << "mean = " << s9.mean << ", sd = " << s9.sd << '\n';
+
+  /* Output of this program:
+    Summing 100 000 ints, using
+    for loop with indices (us): mean = 323, sd = 18
+    for loop with pointers (us): mean = 491, sd = 25
+    for loop with iterators (us): mean = 2071, sd = 42
+    range-for loop (us): mean = 1178, sd = 36
+    for_each algorithm (us): mean = 1347, sd = 28
+    function object (us): mean = 1200, sd = 25
+    lambda function (us): mean = 1192, sd = 25
+
+    Summing 100 000 doubles, using
+    for loop with indices (us): mean = 302, sd = 14
+    for loop with pointers (us): mean = 936, sd = 20
+    for loop with iterators (us): mean = 2043, sd = 39
+    range-for loop (us): mean = 1139, sd = 25
+    for_each algorithm (us): mean = 1409, sd = 33
+    function object (us): mean = 1191, sd = 55
+    lambda function (us): mean = 1178, sd = 24
+  */
 }
