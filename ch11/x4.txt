@@ -1,0 +1,25 @@
+Read and marked files in ewig (grep for COUNT:):
+application.cpp
+application.hpp
+buffer.cpp
+buffer.hpp
+coord.hpp
+draw.cpp
+draw.hpp
+keys.hpp
+keys.cpp
+main.cpp
+terminal.cpp
+terminal.hpp
+utils.hpp
+
+$ grep -r "COUNT:" . | sed "s/\/\//$/" | cut -d"$" -f2 | sort | uniq -c | sed "s/COUNT://" | sort
+
+     11   (int)
+     17   (index)
+      1   (char*)
+      1   (NCURSES_CONST char*)
+      1   (wchar_t)
+      2   (float)
+
+Changes are implemented in https://github.com/tsokk/ewig
