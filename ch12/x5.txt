@@ -1,0 +1,2 @@
+I chose GNU ed to be the "simple C program" to convert to C++.
+It is in repo https://github.com/tsokk/ed
