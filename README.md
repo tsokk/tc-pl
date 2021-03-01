@@ -13,3 +13,7 @@ the style appearing in the book.
 * Chapter 10 exercise 13: convert the mini-compiler written by Bjarne to allow a
   user to define functions; perhaps invent a notation for functions taking parameters
 * Chapter 11 exercise 3: make apply function take function object as argument.
+* Chapter 12 exercise 6: GNU ed might not have been "a simple C program" that
+  exercises 5 and 6 ask to convert to C++. I completed exercise 5, probably.
+	Just probably because the program compiles, but tests of the included test
+	suite fail.

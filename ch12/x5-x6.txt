@@ -1,2 +1,10 @@
 I chose GNU ed to be the "simple C program" to convert to C++.
 It is in repo https://github.com/tsokk/ed
+
+The combines with -Wall flag without errors. However, the tests
+fail, seemingly due to segfault.
+
+I made the conversions of exercise 5. However, removing naked
+news and deletes (exercise 6) would mean more work, which
+is likely to exceed the time estimate given for the exercise.
+I'll therefore postpone completing that exercise, and move on.
