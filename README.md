@@ -17,3 +17,5 @@ the style appearing in the book.
   exercises 5 and 6 ask to convert to C++. I completed exercise 5, probably.
 	Just probably because the program compiles, but tests of the included test
 	suite fail.
+* Chapter 12 exercise 8: last part not implemented yet ("arbitrarily long word stored
+  as an array of characters on free store")
