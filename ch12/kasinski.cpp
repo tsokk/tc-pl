@@ -1,5 +1,4 @@
 #include <cmath>
-#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -26,8 +25,8 @@ map<string, vector<int>> subs(const string &s, int min, int max) {
 
 // search for occurrences of substring `s` in string `s`;
 // return the positions in which it is found
-vector<int> &search(size_t p, const string &s, const string &ss,
-                    vector<int> &res) {
+vector<int> search(size_t p, const string &s, const string &ss,
+                   vector<int> &res) {
   size_t pos = ss.find(s, p);
   if (pos != string::npos) {
     res.push_back(pos);
@@ -39,27 +38,18 @@ vector<int> &search(size_t p, const string &s, const string &ss,
 // return factors of integer n
 vector<int> factors(int n) {
   vector<int> res;
-  int d = 2;
-	int max = n;
-  div_t p = div(n, d);
-  if (p.rem == 0)
-    res.push_back(d);
-  d = 3;
-  while (d <= max) {
-    p = div(n, d);
-    if (p.rem == 0) {
-      res.push_back(d);
-			n = p.quot;
-			for (;;) {
-				p = div(n, d);
-				if (p.rem != 0)
-					break;
-				res.push_back(d);
-				n = p.quot;
-			}
-		}
-    d += 2;
+  while (n % 2 == 0) {
+    res.push_back(2);
+    n /= 2;
   }
+  for (int i = 3; i <= sqrt(n); i += 2) {
+    while (n % i == 0) {
+      res.push_back(i);
+      n /= i;
+    }
+  }
+  if (n > 2)
+    res.push_back(n);
   return res;
 }
 
