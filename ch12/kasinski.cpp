@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -66,18 +67,30 @@ int main() {
     res[s.first] = pos;
   }
   // write out all repetitions, their positions, intervals and
-  // factors of the intervals
+  // factors of the intervals; this is the Kasinski analysis
+  map<int, int> freq;
   cout << "repetition" << '\t' << "first" << '\t' << "second" << '\t'
-       << "interval" << '\n';
+       << "interval" << '\t' << "factors" << '\n';
   for (const auto &r : res) {
     if (r.second.size() > 1) {
       int a{r.second[0]};
       int b{r.second[1]};
       vector<int> facts = factors(b - a);
-      cout << r.first << "\t\t" << a << '\t' << b << '\t' << b - a << '\t';
-      for (const auto &i : facts)
+      cout << r.first << "\t\t" << a << '\t' << b << '\t' << b - a << "\t\t";
+      for (const auto &i : facts) {
         cout << i << '\t';
+        auto search = freq.find(i);
+        if (search != freq.end())
+          search->second += 1;
+        else
+          freq.insert({i, 1});
+      }
       cout << '\n';
     }
   }
+	// write out the frequencies of factors
+  cout << '\n'
+			 << "Frequencies of the factors\n";
+	for (const auto & f : freq)
+		cout << f.first << '\t' << f.second << '\n';
 }
