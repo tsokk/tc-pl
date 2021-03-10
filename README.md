@@ -19,3 +19,8 @@ the style appearing in the book.
 	suite fail.
 * Chapter 12 exercise 8: last part not implemented yet ("arbitrarily long word stored
   as an array of characters on free store")
+* Chapter 12 exercise 11: use Kasinski analysis, hoping it gives an indication of
+  probable key length. Use that to line ciphertext characters to columns, and
+  write out one of such columns. Then on the right, write out letters of the alphabet
+  starting from that character. Do any of the new columns give a letter frequency that
+  corresponds to that of English language? Does that help towards the solution?
