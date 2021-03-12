@@ -1,0 +1,16 @@
+This occurs in the book (p. 167):
+using PF = int(*)(double); // pointer to function taking a double and returning an int
+
+This is found in cpprefrence (https://en.cppreference.com/w/cpp/language/type_alias):
+using func = void (*) (int, int);
+void example(int, int) {}
+func f = example;
+
+The short "all caps" name makes it clear that it is a type alias. So does the second
+example.  But what if we needed aliases for pointers to different kinds of functions?
+
+using PFID = int(*)(double); // pointer to function taking a double and returning an int
+using PFIS = int(*)(string); // pointer to function taking a double and returning a string
+
+using func_vii = void (*) (int, int);
+using func_vs = void (*) (string);
