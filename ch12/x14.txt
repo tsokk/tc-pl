@@ -1,0 +1,73 @@
+Let's look at OpenPose (https://github.com/CMU-Perceptual-Computing-Lab/openpose).
+
+This uses class names such as `HandCpuRenderer` and member function names
+like `renderHandKeypointsCpu`. Parameter names follow same style, for
+instance `outputData`.
+
+Underscores are used like this:
+    template<typename T>
+    Rectangle<T>::Rectangle(const T x_, const T y_, const T width_, const T height_) :
+        x{x_},
+        y{y_},
+        width{width_},
+        height{height_}
+    {
+    }
+and this:
+       catch (const std::exception& e)
+        {
+            error(e.what(), __LINE__, __FUNCTION__, __FILE__);
+        }
+
+Very few short names occur, mainly conventional things such as x and y for
+coordinates in xy-plane.
+
+A different style occurs in GNU-project's libstdc++-v3 library:
+
+    template<typename T>
+      struct constant_init
+      {
+	union {
+	  unsigned char unused;
+	  T obj;
+	};
+	constexpr constant_init() : obj() { }
+
+	template<typename U>
+	  explicit constexpr constant_init(U arg) : obj(arg) { }
+
+	~constant_init() { /* do nothing, union member is not destroyed */ }
+      };
+
+and like this:
+
+      while (__next)
+	{
+	  _Chunk* __ch = __next;
+	  __next = __ch->_M_next;
+	  size_t __size = __ch->_M_size.size();
+	  size_t __align = __ch->_M_size.alignment();
+	  void* __start = (char*)(__ch + 1) - __size;
+	  __r->deallocate(__start, __size, __align);
+	}
+which is lowercase plus underscores extensively.
+
+
+The style of lldb debugger is similar to that of the book:
+
+Symbol::Symbol(uint32_t symID, llvm::StringRef name, SymbolType type, bool external,
+               bool is_debug, bool is_trampoline, bool is_artificial,
+               const lldb::SectionSP &section_sp, addr_t offset, addr_t size,
+               bool size_is_valid, bool contains_linker_annotations,
+               uint32_t flags)
+    : SymbolContextScope(), m_uid(symID), m_type_data(0),
+      m_type_data_resolved(false), m_is_synthetic(is_artificial),
+      m_is_debug(is_debug), m_is_external(external), m_size_is_sibling(false),
+      m_size_is_synthesized(false), m_size_is_valid(size_is_valid || size > 0),
+      m_demangled_is_synthesized(false),
+      m_contains_linker_annotations(contains_linker_annotations),
+      m_is_weak(false), m_type(type),
+      m_mangled(name),
+      m_addr_range(section_sp, offset, size), m_flags(flags) {}
+
+that is, capitals and underscores are mixed.
