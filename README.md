@@ -24,3 +24,8 @@ the style appearing in the book.
   write out one of such columns. Then on the right, write out letters of the alphabet
   starting from that character. Do any of the new columns give a letter frequency that
   corresponds to that of English language? Does that help towards the solution?
+* Chapter 12, exercises 16 and 17 (*3-marked). Wanting to move on, I'm passing the
+  two exercises for now. Simply because I anticipate they take more effort to complete.
+  The reference regarding print function in §12.2.5 is unclear. I could not find it.
+  I checked also chapters 11 and 3 for subsections 2.5 (anticipating a one-off error ;),
+  but that did not clarify the issue.
