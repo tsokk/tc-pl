@@ -29,3 +29,7 @@ the style appearing in the book.
   The reference regarding print function in §12.2.5 is unclear. I could not find it.
   I checked also chapters 11 and 3 for subsections 2.5 (anticipating a one-off error ;),
   but that did not clarify the issue.
+* Chapter 13, motivation is more difficult to find as the exercises get more and
+  more demanding. The topic of this chapter is clearly very important. This and
+  it's exercises might be worth a revisit, when planning for writing a larger
+  program.
