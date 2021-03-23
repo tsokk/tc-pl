@@ -1,0 +1,6 @@
+After wrapping expr to namespace, did not search for all expr identifiers
+that required renaming (expr -> Parser::expr).  The compiler assists in
+finding all missing namespace names; even suggests the correct name to use.
+
+It also took some time to realize how to make user interface and implementation
+(Parser and Parser_impl) separation so that it does not result in a linker error.
