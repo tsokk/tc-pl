@@ -1,0 +1,11 @@
+The standard library header files are kept in (default installation) location:
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29910\include"
+
+See x1.cpp for the list of all public headers in the above directory.  The list contains
+deprecated and experimental headers, all of which can be included with <> notation.  Including
+these (<hash_map>, <hash_set> and <experimental/filesystem>) will cause warnings to be emitted
+by the compiler.  The warnings can be silenced to acknowlegde the receipt of the warning.  This
+is done by defining macros, as instructed by the warning text emitted by the compiler.
+
+As an aside, I have also boost installed.  They reside in another directory and must be included
+with "" notation.  An include directive is also required to indicate their location to the linker.
